@@ -5,8 +5,14 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Rect
+import android.text.Html
 import android.util.AttributeSet
+import android.util.Log
 import android.view.ViewTreeObserver
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class CustomTextView : androidx.appcompat.widget.AppCompatTextView {
     constructor(context: Context) : super(context)
@@ -36,30 +42,30 @@ class CustomTextView : androidx.appcompat.widget.AppCompatTextView {
         val rect = Rect()
         val paint = Paint()
         paint.color = resources.getColor(R.color.white)
+
         for (i in 0 until lineCount) {
-            rect.top = layout.getLineTop(i)
-            rect.left = layout.getLineLeft(i).toInt()
-            rect.right = layout.getLineRight(i).toInt()
-            rect.bottom =
-                (layout.getLineBottom(i) - (if (i + 1 == lineCount) 0 else layout.spacingAdd).toInt())
+            rect.top = if (i == 0) layout.getLineTop(i) + 3 else layout.getLineTop(i) - 1
+            rect.left = layout.getLineLeft(i).toInt() - PADDING_OF_THE_HIGHLIGHT
+            rect.right = layout.getLineRight(i).toInt() + PADDING_OF_THE_HIGHLIGHT * 2 // 2 - this is left padding compensation of 6px
+            rect.bottom = (layout.getLineBottom(i) - (if (i + 1 == lineCount) 1 else layout.spacingAdd).toInt())
+
             canvas.drawRect(rect, paint)
         }
         super.draw(canvas)
     }
 
     fun setText(text: String) {
+        val textUpper = text.uppercase()
         if (width == 0 && height == 0) {
-            customText = text
+            customText = textUpper
             return
         }
 
-        if (text.length > MAX_CHAR_COUNT || text.contains("\n")) {
-            throw IllegalArgumentException("Text must be less than $MAX_CHAR_COUNT characters and contain no line breaks.")
-        }
-
-        val availableWidth = width - paddingLeft - paddingRight
-        maxLineLength = availableWidth
+        val availableWidth = width - paddingLeft - paddingRight - PADDING_OF_THE_HIGHLIGHT * 2
         val paint = paint
+
+        maxLineLength = availableWidth
+        customText = if (textUpper.length > MAX_CHAR_COUNT) textUpper.substring(0, MAX_CHAR_COUNT) else textUpper
 
         val words = customText!!.split(" ")
         val lines = mutableListOf<String>()
@@ -74,8 +80,8 @@ class CustomTextView : androidx.appcompat.widget.AppCompatTextView {
             } else {
                 lines.add(currentLine.toString().trim())
                 currentLine = StringBuilder("$word ")
+                maxLineLength = (currentWidth * LINE_LENGTH_SCALING_FACTOR).toInt()
                 currentWidth = wordWidth
-                maxLineLength = ( maxLineLength * LINE_LENGTH_SCALING_FACTOR).toInt()
             }
         }
 
@@ -83,9 +89,8 @@ class CustomTextView : androidx.appcompat.widget.AppCompatTextView {
             lines.add(currentLine.toString().trim())
         }
 
-        val newText = lines.joinToString("\n")
-        super.setText(newText)
+        val newText = lines.joinToString("<br>")
+        val htmlText = Html.fromHtml(newText, Html.FROM_HTML_MODE_LEGACY)
+        super.setText(htmlText)
     }
-
-
 }

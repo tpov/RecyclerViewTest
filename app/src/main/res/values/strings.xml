@@ -3,4 +3,6 @@
 
     <string name="search">Search</string>
     <string name="settings">Settings</string>
+
+    <string name="input_text">Charlotte Perriand\'s \"La maison au bord de l\'eau\"</string>
 </resources>

@@ -28,16 +28,16 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
         initView()
-        initTextView("Une salle de classe avec des bureaux en bois, des cahiers, un tableau blanc, des plantes et de grandes fenêtres lumineuses.")
+        initTextView(getString(R.string.input_text))
+
     }
 
     private fun initView() {
         textViewPicture = findViewById(R.id.customTextView)
     }
 
-    fun initTextView(text: String) {
+    private fun initTextView(text: String) {
         textViewPicture.setText(text)
     }
 }
