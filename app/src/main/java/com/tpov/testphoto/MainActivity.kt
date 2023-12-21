@@ -13,16 +13,20 @@ import android.util.TypedValue
 import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toolbar
+import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
+import com.google.android.material.navigation.NavigationView
 import org.w3c.dom.Text
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var textViewPicture: CustomTextView
+    private lateinit var menu: ImageButton
+    private lateinit var drawerLayout: DrawerLayout
+    private lateinit var navigationView: NavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,9 +39,33 @@ class MainActivity : AppCompatActivity() {
 
     private fun initView() {
         textViewPicture = findViewById(R.id.customTextView)
+        menu = findViewById(R.id.btnMenu)
+        drawerLayout = findViewById(R.id.drawer_layout)
+        navigationView = findViewById(R.id.nav_view)
     }
 
     private fun initTextView(text: String) {
         textViewPicture.setText(text)
+
+        menu.setOnClickListener { view ->
+            if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                drawerLayout.closeDrawer(GravityCompat.END)
+            } else {
+                drawerLayout.openDrawer(GravityCompat.START)
+            }
+        }
+
+        navigationView.setNavigationItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.action_first_task -> {
+
+                }
+                R.id.action_second_task -> {
+
+                }
+            }
+            true
+        }
+
     }
 }
