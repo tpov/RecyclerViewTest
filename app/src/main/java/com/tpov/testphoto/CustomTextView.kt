@@ -37,7 +37,7 @@ class CustomTextView : androidx.appcompat.widget.AppCompatTextView {
         })
     }
 
-    override fun draw(canvas: Canvas) {
+    override fun onDraw(canvas: Canvas) {
         val lineCount = layout.lineCount
         val rect = Rect()
         val paint = Paint()
@@ -51,7 +51,7 @@ class CustomTextView : androidx.appcompat.widget.AppCompatTextView {
 
             canvas.drawRect(rect, paint)
         }
-        super.draw(canvas)
+        super.onDraw(canvas)
     }
 
     fun setText(text: String) {

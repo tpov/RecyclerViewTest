@@ -1,71 +1,56 @@
 package com.tpov.testphoto
 
-import android.content.Context
-import android.graphics.Color
-import android.graphics.Typeface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.PersistableBundle
-import android.text.*
-import android.text.style.*
-import android.util.Log
-import android.util.TypedValue
-import android.view.Gravity
-import android.view.Menu
-import android.view.MenuItem
 import android.widget.*
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
-import org.w3c.dom.Text
+import com.tpov.testphoto.first_task.FirstTaskFragment
+import com.tpov.testphoto.second_task.SecondTaskFragment
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var textViewPicture: CustomTextView
     private lateinit var menu: ImageButton
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navigationView: NavigationView
+    private lateinit var firstTaskFragment: FirstTaskFragment
+    private lateinit var secondTaskFragment: SecondTaskFragment
+    private lateinit var fragmentManager: FragmentManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         initView()
-        initTextView(getString(R.string.input_text))
+        initTextView()
 
     }
 
     private fun initView() {
-        textViewPicture = findViewById(R.id.customTextView)
         menu = findViewById(R.id.btnMenu)
         drawerLayout = findViewById(R.id.drawer_layout)
         navigationView = findViewById(R.id.nav_view)
+
+        fragmentManager = FragmentManager(supportFragmentManager, R.id.fragment_container)
+        firstTaskFragment = FirstTaskFragment()
+        fragmentManager.initFragment(firstTaskFragment)
     }
 
-    private fun initTextView(text: String) {
-        textViewPicture.setText(text)
+    private fun initTextView() {
 
         menu.setOnClickListener { view ->
-            if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            if (drawerLayout.isDrawerOpen(GravityCompat.START))
                 drawerLayout.closeDrawer(GravityCompat.END)
-            } else {
-                drawerLayout.openDrawer(GravityCompat.START)
-            }
+            else drawerLayout.openDrawer(GravityCompat.START)
         }
 
         navigationView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
-                R.id.action_first_task -> {
-
-                }
-                R.id.action_second_task -> {
-
-                }
+                R.id.action_first_task -> fragmentManager.replaceFragment(firstTaskFragment)
+                R.id.action_second_task -> fragmentManager.replaceFragment(secondTaskFragment)
             }
             true
         }
-
     }
 }
