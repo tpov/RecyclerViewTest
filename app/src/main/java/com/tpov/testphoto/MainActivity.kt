@@ -34,6 +34,7 @@ class MainActivity : AppCompatActivity() {
 
         fragmentManager = FragmentManager(supportFragmentManager, R.id.fragment_container)
         firstTaskFragment = FirstTaskFragment()
+        secondTaskFragment = SecondTaskFragment()
         fragmentManager.initFragment(firstTaskFragment)
     }
 
