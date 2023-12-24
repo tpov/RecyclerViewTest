@@ -31,7 +31,6 @@ class PostsAdapter(private val posts: List<Post>) : RecyclerView.Adapter<PostsAd
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
 
         val post = posts[position]
-
         val outputFormat = SimpleDateFormat(FORMAT_DATE, Locale.ENGLISH)
 
         try {
@@ -49,9 +48,7 @@ class PostsAdapter(private val posts: List<Post>) : RecyclerView.Adapter<PostsAd
         if (post.photo != null && post.photo.isNotEmpty()) {
             Picasso.get().load(post.photo).into(holder.postImage)
             holder.postImage.visibility = View.VISIBLE
-        } else {
-            holder.postImage.visibility = View.GONE
-        }
+        } else holder.postImage.visibility = View.GONE
 
         Picasso.get().load(post.user_pic).into(holder.profileImage)
         Picasso.get().load(post.photo).into(holder.postImage)

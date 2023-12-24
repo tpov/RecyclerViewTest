@@ -20,7 +20,6 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
-                <!-- Эта категория информирует систему, что это стартовая точка приложения -->
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>

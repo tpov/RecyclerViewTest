@@ -47,10 +47,12 @@ class MainActivity : AppCompatActivity() {
         }
 
         navigationView.setNavigationItemSelectedListener { menuItem ->
+
             when (menuItem.itemId) {
                 R.id.action_first_task -> fragmentManager.replaceFragment(firstTaskFragment)
                 R.id.action_second_task -> fragmentManager.replaceFragment(secondTaskFragment)
             }
+            drawerLayout.closeDrawer(GravityCompat.START)
             true
         }
     }
